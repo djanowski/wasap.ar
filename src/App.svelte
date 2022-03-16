@@ -12,9 +12,12 @@
     } catch (error) {}
   }
 
+  async function handleBlur() {
+    phone = parse(phone);
+  }
+
   function parse(text) {
     const results = findPhoneNumbersInText(text, 'AR');
-    console.log(results[0]);
     if (results.length === 0) return biasedParse(text);
     else return results[0].number.number;
   }
@@ -48,7 +51,13 @@
   <div class="wrapper">
     <h1>Enviá Whatsapp sin agendar</h1>
     <p>Escribí el número de teléfono o pegá del portapapeles y listo.</p>
-    <input autofocus bind:value={phone} on:paste={handlePaste} type="tel" />
+    <input
+      autofocus
+      bind:value={phone}
+      on:paste={handlePaste}
+      on:blur={handleBlur}
+      type="tel"
+    />
     <button class="send" on:click={openWhatsapp}>ENVIAR <WhatsappIcon /></button
     >
     <br />
