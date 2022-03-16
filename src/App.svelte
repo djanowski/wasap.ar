@@ -37,8 +37,12 @@
     if (phone) openWhatsapp();
   }
 
-  function openWhatsapp(event) {
-    event.preventDefault();
+  function handleSubmit() {
+    phone = parse(phone);
+    if (phone) openWhatsapp();
+  }
+
+  function openWhatsapp() {
     const url = `https://api.whatsapp.com/send/?phone=${getDigits(phone)}`;
     window.location = url;
   }
@@ -46,19 +50,30 @@
   function getDigits(text) {
     return text?.replace(/[^\d]/g, '');
   }
+
+  function validity(node, val) {
+    if (!!val) node.setCustomValidity(val);
+    return {
+      update(newValue) {
+        node.setCustomValidity(newValue ? newValue : '');
+      },
+    };
+  }
 </script>
 
 <main>
   <div class="wrapper">
     <h1>Enviá Whatsapp sin agendar</h1>
     <p>Escribí el número de teléfono o pegá del portapapeles y listo.</p>
-    <form on:submit={openWhatsapp}>
+    <form on:submit|preventDefault={handleSubmit}>
       <input
         autofocus
         bind:value={phone}
-        on:paste={handlePaste}
+        on:paste|preventDefault={handlePaste}
         on:blur={handleBlur}
+        use:validity={!!parse(phone || '') ? '' : 'No entiendo ese número :-('}
         type="tel"
+        required
       />
       <button class="send">ENVIAR <WhatsappIcon /></button>
     </form>
@@ -94,6 +109,10 @@
   input:focus {
     outline: none;
     border-color: #128c7e;
+  }
+
+  input:invalid {
+    border-color: #f26262;
   }
 
   button {
