@@ -71,7 +71,9 @@
         bind:value={phone}
         on:paste|preventDefault={handlePaste}
         on:blur={handleBlur}
-        use:validity={!!parse(phone || '') ? '' : 'No entiendo ese número :-('}
+        use:validity={!phone || !!parse(phone)
+          ? ''
+          : 'No entiendo ese número :-('}
         type="tel"
         required
       />
@@ -109,10 +111,6 @@
   input:focus {
     outline: none;
     border-color: #128c7e;
-  }
-
-  input:invalid {
-    border-color: #f26262;
   }
 
   button {
