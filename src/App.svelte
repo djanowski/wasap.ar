@@ -37,7 +37,8 @@
     if (phone) openWhatsapp();
   }
 
-  function openWhatsapp() {
+  function openWhatsapp(event) {
+    event.preventDefault();
     const url = `https://api.whatsapp.com/send/?phone=${getDigits(phone)}`;
     window.location = url;
   }
@@ -51,16 +52,16 @@
   <div class="wrapper">
     <h1>Enviá Whatsapp sin agendar</h1>
     <p>Escribí el número de teléfono o pegá del portapapeles y listo.</p>
-    <input
-      autofocus
-      bind:value={phone}
-      on:paste={handlePaste}
-      on:blur={handleBlur}
-      type="tel"
-    />
-    <button class="send" on:click={openWhatsapp}>ENVIAR <WhatsappIcon /></button
-    >
-    <br />
+    <form on:submit={openWhatsapp}>
+      <input
+        autofocus
+        bind:value={phone}
+        on:paste={handlePaste}
+        on:blur={handleBlur}
+        type="tel"
+      />
+      <button class="send">ENVIAR <WhatsappIcon /></button>
+    </form>
     <button class="paste" on:click={doPaste}>PEGAR <PasteIcon /></button>
   </div>
 </main>
@@ -69,22 +70,30 @@
   h1 {
     font-size: 28px;
   }
+
   main {
     text-align: center;
     max-width: 280px;
     margin: 0 auto;
     display: flex;
     height: 100vh; /*new*/
+    width: 100vw;
     align-items: center;
+    justify-content: center;
   }
 
   input {
     text-align: center;
     border: 2px solid #ccc;
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 10px 15px;
     width: 100%;
     font-size: 22px;
+  }
+
+  input:focus {
+    outline: none;
+    border-color: #128c7e;
   }
 
   button {
