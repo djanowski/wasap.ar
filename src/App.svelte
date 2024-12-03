@@ -13,7 +13,9 @@
   }
 
   async function handleBlur() {
-    phone = parse(phone);
+    const parsed = parse(phone);
+    if (parsed)
+      phone = parsed;
   }
 
   function parse(text) {
