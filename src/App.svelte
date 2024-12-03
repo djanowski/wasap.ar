@@ -45,8 +45,8 @@
   }
 
   function openWhatsapp() {
-    const url = `https://api.whatsapp.com/send/?phone=${getDigits(phone)}`;
-    window.location = url;
+    const url = `whatsapp://send/?phone=${getDigits(phone)}`;
+    window.open(url, '_top');
   }
 
   function getDigits(text) {
